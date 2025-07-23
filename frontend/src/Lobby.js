@@ -1,0 +1,70 @@
+import React, { useEffect, useState } from "react";
+import socket from "./socket";
+
+function Lobby({ setScreen, setCzolko, setPlayers, setPlayerName, playerName }) {
+  const [roomInput, setRoomInput] = useState("");
+  const [nameInput, setNameInput] = useState("");
+  const [playersList, setPlayersList] = useState([]);
+  const [roomId, setRoomId] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    socket.on("players_update", (players) => setPlayersList(players));
+    socket.on("game_started", ({ word, players }) => {
+      setCzolko(word);
+      setPlayers(players);
+      setScreen("game");
+    });
+    return () => {
+      socket.off("players_update");
+      socket.off("game_started");
+    };
+  }, [setScreen, setCzolko, setPlayers]);
+
+  function createRoom() {
+    if (!nameInput || !roomInput) return setError("Podaj nazwę i pokój");
+    socket.emit("create_room", { roomId: roomInput, name: nameInput }, (res) => {
+      if (res.error) setError(res.error);
+      else {
+        setRoomId(roomInput);
+        setPlayerName(nameInput);
+      }
+    });
+  }
+
+  function joinRoom() {
+    if (!nameInput || !roomInput) return setError("Podaj nazwę i pokój");
+    socket.emit("join_room", { roomId: roomInput, name: nameInput }, (res) => {
+      if (res.error) setError(res.error);
+      else {
+        setRoomId(roomInput);
+        setPlayerName(nameInput);
+      }
+    });
+  }
+
+  function startGame() {
+    if (!roomId) return;
+    socket.emit("start_game", { roomId });
+  }
+
+  return (
+    <div>
+      <h2>Dołącz lub utwórz pokój</h2>
+      <input placeholder="Twój nick" value={nameInput} onChange={e => setNameInput(e.target.value)} />
+      <input placeholder="Kod pokoju" value={roomInput} onChange={e => setRoomInput(e.target.value)} />
+      <button onClick={createRoom}>Utwórz pokój</button>
+      <button onClick={joinRoom}>Dołącz do pokoju</button>
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      <h3>Gracze w pokoju:</h3>
+      <ul>
+        {playersList.map(p => <li key={p.id || p.name}>{p.name}</li>)}
+      </ul>
+      {playersList.length > 1 && (
+        <button onClick={startGame}>Start gry</button>
+      )}
+    </div>
+  );
+}
+
+export default Lobby;
