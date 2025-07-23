@@ -1,3 +1,3 @@
 import { io } from "socket.io-client";
-const socket = io("http://localhost:4000"); // jeśli backend na innym adresie, wpisz ten adres
+const socket = io("https://czolko-3.onrender.com"); // <-- tu twój backend!
 export default socket;
