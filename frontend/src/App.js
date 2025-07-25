@@ -1,11 +1,12 @@
-import './App.css'; // na samej górze!
 import React, { useState } from "react";
 import Lobby from "./Lobby";
 import Game from "./Game";
+import './App.css';
 
 function App() {
   const [screen, setScreen] = useState("lobby");
-  const [czolko, setCzolko] = useState(null);
+  const [czolkoWords, setCzolkoWords] = useState([]);
+  const [myIndex, setMyIndex] = useState(null);
   const [players, setPlayers] = useState([]);
   const [playerName, setPlayerName] = useState("");
 
@@ -15,17 +16,24 @@ function App() {
       {screen === "lobby" && (
         <Lobby
           setScreen={setScreen}
-          setCzolko={setCzolko}
+          setCzolkoWords={setCzolkoWords}
           setPlayers={setPlayers}
+          setMyIndex={setMyIndex}
           setPlayerName={setPlayerName}
           playerName={playerName}
         />
       )}
       {screen === "game" && (
-        <Game czolko={czolko} players={players} playerName={playerName} />
+        <Game
+          words={czolkoWords}
+          players={players}
+          myIndex={myIndex}
+          playerName={playerName}
+        />
       )}
     </div>
   );
 }
 
 export default App;
+
