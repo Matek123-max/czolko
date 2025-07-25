@@ -49,22 +49,26 @@ function Lobby({ setScreen, setCzolko, setPlayers, setPlayerName, playerName }) 
   }
 
   return (
+  <div>
+    <h2>Dołącz lub utwórz pokój</h2>
+    <input placeholder="Twój nick" value={nameInput} onChange={e => setNameInput(e.target.value)} />
+    <input placeholder="Kod pokoju" value={roomInput} onChange={e => setRoomInput(e.target.value)} />
     <div>
-      <h2>Dołącz lub utwórz pokój</h2>
-      <input placeholder="Twój nick" value={nameInput} onChange={e => setNameInput(e.target.value)} />
-      <input placeholder="Kod pokoju" value={roomInput} onChange={e => setRoomInput(e.target.value)} />
-      <button onClick={createRoom}>Utwórz pokój</button>
+      <button onClick={createRoom} style={{ marginRight: 8 }}>Utwórz pokój</button>
       <button onClick={joinRoom}>Dołącz do pokoju</button>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <h3>Gracze w pokoju:</h3>
-      <ul>
-        {playersList.map(p => <li key={p.id || p.name}>{p.name}</li>)}
-      </ul>
-      {playersList.length > 1 && (
-        <button onClick={startGame}>Start gry</button>
-      )}
     </div>
-  );
+    {error && <div style={{ color: "#e11d48", margin: 8 }}>{error}</div>}
+    <hr style={{ margin: "24px 0" }}/>
+    <h3>Gracze w pokoju:</h3>
+    <ul>
+      {playersList.map(p => <li key={p.id || p.name}>{p.name}</li>)}
+    </ul>
+    {playersList.length > 1 && (
+      <button onClick={startGame} style={{ marginTop: 16, fontWeight: 600 }}>Start gry</button>
+    )}
+  </div>
+);
+
 }
 
 export default Lobby;
