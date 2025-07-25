@@ -1,3 +1,4 @@
+import './App.css';
 import React, { useState } from "react";
 import Lobby from "./Lobby";
 import Game from "./Game";
