@@ -46,18 +46,28 @@ io.on('connection', (socket) => {
   });
 
   socket.on('start_game', ({ roomId }) => {
-    const room = rooms[roomId];
-    if (!room) return;
-    // użyj aktualnej listy słów
-    const shuffled = [...DEFAULT_WORDS].sort(() => Math.random() - 0.5);
-    room.words = room.players.map((_, idx) => shuffled[idx % shuffled.length]);
-    room.started = true;
-    room.players.forEach((p, i) => {
-      const czolko = room.words[(i + 1) % room.players.length];
-      io.to(p.id).emit('game_started', { word: czolko, players: room.players.map(x=>x.name) });
+  const room = rooms[roomId];
+  if (!room) return;
+  const N = room.players.length;
+  // Wylosuj N unikalnych słów:
+  let allWords = [...DEFAULT_WORDS].sort(() => Math.random() - 0.5);
+  if (allWords.length < N) return; // za mało słów!
+  const words = allWords.slice(0, N);
+
+  // Każdemu graczowi wyślij listę z "???" na swoim miejscu:
+  room.players.forEach((p, i) => {
+    const playerWords = words.map((w, idx) => idx === i ? "???" : w);
+    io.to(p.id).emit('game_started', {
+      myIndex: i,
+      players: room.players.map(x => x.name),
+      words: playerWords,
     });
-    io.to(roomId).emit('players_update', room.players);
   });
+  room.started = true;
+  room.words = words;
+  io.to(roomId).emit('players_update', room.players);
+});
+
 
   socket.on('disconnect', () => {
     for (let roomId in rooms) {
