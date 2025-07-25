@@ -1,6 +1,10 @@
 import React from "react";
 
 function Game({ words, players, myIndex, playerName }) {
+  // Dodaj warunek ochronny!
+  if (!words || !players || words.length !== players.length || myIndex === null) {
+    return <div>Ładowanie gry...</div>;
+  }
   return (
     <div>
       <h2>Rozgrywka</h2>
