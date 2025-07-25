@@ -8,9 +8,7 @@ function Lobby({ setScreen, setCzolko, setPlayers, setPlayerName, playerName }) 
   const [roomId, setRoomId] = useState("");
   const [error, setError] = useState("");
 
-  // ...
-const [czolkoWords, setCzolkoWords] = useState([]);
-const [myIndex, setMyIndex] = useState(null);
+
 
 useEffect(() => {
   socket.on("players_update", (players) => setPlayersList(players));
