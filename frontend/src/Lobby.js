@@ -18,6 +18,7 @@ function Lobby({
   useEffect(() => {
     socket.on("players_update", (players) => setPlayersList(players));
     socket.on("game_started", ({ words, myIndex, players }) => {
+      console.log("ODEBRANO GAME_STARTED:", words, myIndex, players);
       setCzolkoWords(words);
       setPlayers(players);
       setMyIndex(myIndex);
@@ -52,8 +53,9 @@ function Lobby({
   }
 
   function startGame() {
-    if (!roomId) return;
-    socket.emit("start_game", { roomId });
+    const id = roomId || roomInput;
+    if (!id) return;
+    socket.emit("start_game", { roomId: id });
   }
 
   return (
@@ -79,3 +81,4 @@ function Lobby({
 }
 
 export default Lobby;
+
