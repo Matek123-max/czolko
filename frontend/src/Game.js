@@ -1,28 +1,36 @@
 import React from "react";
 
-function Game({ czolko, players, playerName }) {
+function Game({ words, players, myIndex, playerName }) {
   return (
-  <div>
-    <h2>Rozgrywka</h2>
-    <h3>
-      Twoje “czółko”:
-      <span style={{ fontWeight: "bold", color: "#a21caf", marginLeft: 6 }}>
-        {czolko}
-      </span>
-    </h3>
-    <div style={{ margin: "24px 0" }}>
-      <p>Gracze w pokoju:</p>
-      <ul>
-        {players.map((p, idx) => <li key={idx}>{p}</li>)}
-      </ul>
-    </div>
     <div>
-      <p style={{ color: "#7c3aed" }}>
-        Zadawaj pytania i baw się dobrze! (kolejne ulepszenia w następnej wersji)
-      </p>
+      <h2>Twoje “czółko”</h2>
+      <ul>
+        {players.map((name, idx) => (
+          <li key={idx} style={{
+            fontWeight: idx === myIndex ? 'bold' : 'normal',
+            color: idx === myIndex ? "#a21caf" : "#333"
+          }}>
+            {idx === myIndex ? (
+              <>
+                <b>{name} (Ty):</b> <span style={{color:"#9ca3af"}}>???</span>
+              </>
+            ) : (
+              <>
+                {name}: <span style={{color:"#4f46e5"}}>{words[idx]}</span>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div style={{ marginTop: 24, color: "#7c3aed" }}>
+        <b>Spróbuj zgadnąć swoje hasło! <br/>Pytaj innych – oni widzą Twój “czółko”!</b>
+      </div>
     </div>
-  </div>
-);
+  );
+}
+
+export default Game;
+
 
 }
 {screen === "game" && (
@@ -34,4 +42,4 @@ function Game({ czolko, players, playerName }) {
   />
 )}
 
-export default Game;
+
