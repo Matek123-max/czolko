@@ -8,18 +8,24 @@ function Lobby({ setScreen, setCzolko, setPlayers, setPlayerName, playerName }) 
   const [roomId, setRoomId] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    socket.on("players_update", (players) => setPlayersList(players));
-    socket.on("game_started", ({ word, players }) => {
-      setCzolko(word);
-      setPlayers(players);
-      setScreen("game");
-    });
-    return () => {
-      socket.off("players_update");
-      socket.off("game_started");
-    };
-  }, [setScreen, setCzolko, setPlayers]);
+  // ...
+const [czolkoWords, setCzolkoWords] = useState([]);
+const [myIndex, setMyIndex] = useState(null);
+
+useEffect(() => {
+  socket.on("players_update", (players) => setPlayersList(players));
+  socket.on("game_started", ({ words, myIndex, players }) => {
+    setCzolkoWords(words);
+    setPlayers(players);
+    setMyIndex(myIndex);
+    setScreen("game");
+  });
+  return () => {
+    socket.off("players_update");
+    socket.off("game_started");
+  };
+}, [setScreen, setCzolkoWords, setPlayers, setMyIndex]);
+
 
   function createRoom() {
     if (!nameInput || !roomInput) return setError("Podaj nazwę i pokój");
