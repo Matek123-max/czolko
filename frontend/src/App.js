@@ -1,4 +1,4 @@
-import './App.css';
+import './App.css'; // na samej górze!
 import React, { useState } from "react";
 import Lobby from "./Lobby";
 import Game from "./Game";
@@ -10,7 +10,7 @@ function App() {
   const [playerName, setPlayerName] = useState("");
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="main-card">
       <h1>Czółko Online</h1>
       {screen === "lobby" && (
         <Lobby
