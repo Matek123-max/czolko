@@ -7,6 +7,8 @@ function Lobby({ setScreen, setCzolko, setPlayers, setPlayerName, playerName }) 
   const [playersList, setPlayersList] = useState([]);
   const [roomId, setRoomId] = useState("");
   const [error, setError] = useState("");
+const [czolkoWords, setCzolkoWords] = useState([]);
+const [myIndex, setMyIndex] = useState(null);
 
 
 
