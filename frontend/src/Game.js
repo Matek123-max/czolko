@@ -25,5 +25,13 @@ function Game({ czolko, players, playerName }) {
 );
 
 }
+{screen === "game" && (
+  <Game
+    words={czolkoWords}
+    players={players}
+    myIndex={myIndex}
+    playerName={playerName}
+  />
+)}
 
 export default Game;
